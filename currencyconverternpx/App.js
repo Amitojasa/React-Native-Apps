@@ -11,6 +11,7 @@ import {
 	StatusBar,
 } from "react-native";
 
+import Snackbar from "react-native-snackbar"
 const currencyPerRupee = {
 	DOLLAR: 0.014,
 	EURO: 0.012,
@@ -23,13 +24,18 @@ const currencyPerRupee = {
 	BITCOIN: 0.000004,
 };
 
+
 const App = () => {
 	const [inputValue, setInputValue] = useState("");
 	const [resultValue, setResultValue] = useState(0);
 
 	const convertCurrency = (currency) => {
 		if (!inputValue) {
-			return Alert.alert("Error", "Please enter some value");
+			return Snackbar.show({
+        text: 'Please enter a value',
+        duration: Snackbar.LENGTH_SHORT,
+		backgroundColor:"#B4161B"
+      });
 		}
 		let r = parseFloat(inputValue) * currencyPerRupee[currency];
 		setResultValue(r.toFixed(3));

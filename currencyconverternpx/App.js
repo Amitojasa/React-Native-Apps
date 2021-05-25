@@ -1,112 +1,145 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-import React from 'react';
-import type {Node} from 'react';
+import React, { useState } from "react";
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+	StyleSheet,
+	SafeAreaView,
+	ScrollView,
+	TextInput,
+	Text,
+	View,
+	TouchableOpacity,
+	Alert,
+	StatusBar,
+} from "react-native";
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+const currencyPerRupee = {
+	DOLLAR: 0.014,
+	EURO: 0.012,
+	POUND: 0.011,
+	RUBLE: 0.93,
+	AUSDOLLAR: 0.2,
+	CANDOLLAR: 0.019,
+	YEN: 1.54,
+	DINAR: 0.0043,
+	BITCOIN: 0.000004,
 };
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+const App = () => {
+	const [inputValue, setInputValue] = useState("");
+	const [resultValue, setResultValue] = useState(0);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+	const convertCurrency = (currency) => {
+		if (!inputValue) {
+			return Alert.alert("Error", "Please enter some value");
+		}
+		let r = parseFloat(inputValue) * currencyPerRupee[currency];
+		setResultValue(r.toFixed(3));
+	};
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+	return (
+		<>
+			<StatusBar />
+			<ScrollView
+				backgroundColor="#1b262c"
+				keyboardShouldPersistTaps="never"
+				contentInsetAdjustmentBehavior="automatic"
+			>
+				<SafeAreaView style={styles.container}>
+					<View>
+						<Text style={styles.title}>Currency Converter</Text>
+					</View>
+					<View style={styles.resultContainer}>
+						<Text style={styles.resultValue}>{resultValue}</Text>
+					</View>
+					<View style={styles.inputContainer}>
+						<TextInput
+							style={styles.input}
+							keyboardType="numeric"
+							placeholder="Enter Value"
+							placeholderTextColor="#FFFFFF"
+							value={inputValue.toString()}
+							onChangeText={(inputValue) =>
+								setInputValue(inputValue)
+							}
+						/>
+					</View>
+					<View style={styles.convertButtonContainer}>
+						{Object.keys(currencyPerRupee).map((currency) => (
+							<TouchableOpacity
+								key={currency}
+								style={styles.currencyBox}
+								onPress={() => convertCurrency(currency)}
+							>
+								<Text style={styles.currencyText}>
+									{currency}
+								</Text>
+							</TouchableOpacity>
+						))}
+					</View>
+				</SafeAreaView>
+			</ScrollView>
+		</>
+	);
 };
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: "#1b262c",
+	},
+	title: {
+		fontSize: 40,
+		marginTop: 30,
+		color: "#FFF",
+		alignSelf: "center",
+	},
+	resultContainer: {
+		height: 70,
+		marginTop: 30,
+		justifyContent: "center",
+		borderColor: "#bbe1fa",
+		borderWidth: 2,
+		alignItems: "center",
+	},
+
+	resultValue: {
+		fontSize: 30,
+		color: "#ffffff",
+		fontWeight: "bold",
+	},
+	inputContainer: {
+		height: 70,
+		marginTop: 10,
+		justifyContent: "center",
+		alignItems: "center",
+		borderWidth: 2,
+		borderColor: "#bbe1fa",
+	},
+	input: {
+		fontSize: 20,
+		textAlign: "center",
+		color: "#FFFFFF",
+	},
+
+	convertButtonContainer: {
+		flexDirection: "row",
+		flexWrap: "wrap",
+		marginTop: 10,
+	},
+	currencyBox: {
+		height: 100,
+		width: "33.3%",
+		justifyContent: "center",
+		alignItems: "center",
+		borderWidth: 2,
+		borderColor: "#bbe1fa",
+		backgroundColor: "#0f4c75",
+		marginVertical: 10,
+	},
+	currencyText: {
+		color: "#FFFFFF",
+		// fontSize: 20,
+		fontWeight: "bold",
+	},
+});

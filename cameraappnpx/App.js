@@ -34,7 +34,16 @@ const App = () => {
 	return (
 		<View style={styles.container}>
 			{image ? (
-				<Text>Image is present</Text>
+				<View style={styles.preview}>
+					<Text style={styles.camtext}>Here is your new profile pic</Text>
+					<Image style={styles.clickedImage} source={{ uri: image, width: '100%', height: '80%' }} />
+					<Button
+						title="Click new Image"
+						onPress={() => {
+							setImage(null);
+						}}
+					/>
+				</View>
 			) : (
 				<RNCamera
 					style={styles.preview}
@@ -64,7 +73,7 @@ const App = () => {
 									justifyContent: 'center'
 								}}
 							>
-								<TouchableOpacity style={styles.capture} onPress={() => takePicture(RNCamera)}>
+								<TouchableOpacity style={styles.capture} onPress={() => takePicture(camera)}>
 									<Text>Snap</Text>
 								</TouchableOpacity>
 							</View>
@@ -91,8 +100,23 @@ const styles = StyleSheet.create({
 	},
 	capture: {
 		flex: 0,
-		backgroundColor: '#FFF',
+		backgroundColor: '#2827CC',
+
 		padding: 20,
 		alignSelf: 'center'
+	},
+	camtext: {
+		backgroundColor: '#5DA3FA',
+		color: '#FFFFFF',
+		marginBottom: 10,
+		width: '100%',
+		textAlign: 'center',
+		paddingVertical: 20,
+		fontSize: 25
+	},
+	clickedImage: {
+		width: 300,
+		height: 300,
+		borderRadius: 150
 	}
 });

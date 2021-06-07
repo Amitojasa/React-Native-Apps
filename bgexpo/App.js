@@ -4,12 +4,15 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  StatusBar
+  StatusBar,
+  ImageBackground
 } from "react-native";
 
 const App = () => {
   const [randomColor, setrandomColor] = useState("rgb(36,43,46)");
   const [randomHexColor, setrandomHexColor] = useState("#242B2E");
+  // const fixval = "https://picsum.photos/500/600?random="
+  // const [image, setImage] = useState({ uri: "https://picsum.photos/500/600?random=1" });
 
   const changeBackground = () => {
     let r = Math.floor(Math.random() * 256);
@@ -19,6 +22,10 @@ const App = () => {
     let s = "rgb(" + r + "," + g + "," + b + ")";
     setrandomHexColor(rgb2Hex(s));
     setrandomColor(s);
+
+    // image.uri = fixval + r;
+    // setImage(image);
+
   };
 
   const resetBackground = () => {
@@ -38,7 +45,9 @@ const App = () => {
   return (
     <>
       <StatusBar backgroundColor="#000" />
-      <View style={[styles.container, { backgroundColor: randomColor }]}>
+      {/* <ImageBackground source={image} style={styles.image}> */}
+      <View style={styles.container}>
+
         <TouchableOpacity onPress={changeBackground}>
           <Text style={[styles.text, { backgroundColor: "#E03B8B" }]}>
             Tap Me
@@ -56,7 +65,9 @@ const App = () => {
         <View style={styles.textview}>
           <Text style={styles.simpletext}>Hex Code : {randomHexColor}</Text>
         </View>
+
       </View>
+      {/* </ImageBackground> */}
     </>
   );
 };
@@ -64,6 +75,11 @@ const App = () => {
 export default App;
 
 const styles = StyleSheet.create({
+  // image: {
+  //   flex: 1,
+  //   resizeMode: "cover",
+  //   justifyContent: "center"
+  // },
   container: {
     flex: 1,
     alignItems: "center",

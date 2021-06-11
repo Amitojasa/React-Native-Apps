@@ -6,7 +6,7 @@ export const addSeries = (series) => ({
 })
 export const removeSeries = (id) => ({
     type: REMOVE_SERIES,
-    payload: series
+    payload: id
 })
 export const markComplete = (id) => ({
     type: MARK_COMPLETE,
